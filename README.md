@@ -90,9 +90,8 @@ In [4]: %timeit tokenizer.encode("I like apples")
 48.7 µs ± 1.93 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
 ```
 
-3) Rust bindings for Python
+3) Rust binding for Python
 
-scripts
 
 ```python
 In [1]: from tokenizers import BertWordPieceTokenizer
