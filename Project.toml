@@ -1,7 +1,7 @@
 name = "BertWordPieceTokenizer"
 uuid = "e699e2b3-dc1f-4d74-b084-491039b7f4fd"
 authors = ["Sean Lee <xmlee97@gmail.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
