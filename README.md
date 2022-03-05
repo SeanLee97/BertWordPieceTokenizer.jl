@@ -57,7 +57,7 @@ BWP.enable_truncation(512, truncation="pre")
 ```
 
 
-## Bencahmark
+## Benchmark
 
 1) Julia
 
