@@ -1,0 +1,11 @@
+name = "BertWordPieceTokenizer"
+uuid = "e699e2b3-dc1f-4d74-b084-491039b7f4fd"
+authors = ["Sean Lee <xmlee97@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+IsURL = "ceb4388c-583f-448d-bb30-00b11e8c5682"
+
+[compat]
+julia = "1.4"
