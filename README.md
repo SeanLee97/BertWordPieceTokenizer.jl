@@ -5,11 +5,6 @@ Load BERT WordPiece Tokenizer
 
 ## Installation
 
-```julia
-julia> using Pkg; Pkg.add("BertWordPieceTokenizer")
-```
-
-or 
 
 ```julia
 julia> using Pkg; Pkg.add("(https://github.com/SeanLee97/BertWordPieceTokenizer.jl.git")
