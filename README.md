@@ -76,7 +76,7 @@ julia> @timeit BWP.encode("I like apples")
 ```python
 In [1]: from bert4keras.tokenizers import Tokenizer
 
-In [2]: tokenizer = Tokenizer("bert_uncased_vocab.txt", lowercase=True)
+In [2]: tokenizer = Tokenizer("bert_uncased_vocab.txt", do_lower_case=True)
 
 In [3]: tokenizer.encode("I like apples")
 Out[3]: ([101, 1045, 2066, 18108, 102], [0, 0, 0, 0, 0])
