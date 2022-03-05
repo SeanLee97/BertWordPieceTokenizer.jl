@@ -12,12 +12,12 @@ include("utils.jl")
 
 # define global variables
 # initialized vocabulary
-global const _token2id = Ref{Dict{String, Int64}}(Dict{String, Int64}())
-global const _id2token = Ref{Dict{Int64, String}}(Dict{Int64, String}())
-global const _max_word_length = Ref{Int64}(200)
+global const _token2id = Ref{Dict{String, Int}}(Dict{String, Int}())
+global const _id2token = Ref{Dict{Int, String}}(Dict{Int, String}())
+global const _max_word_length = Ref{Int}(200)
 global const _do_lowercase = Ref{Bool}(false)
 # max tokenized length
-global const _max_length = Ref{Union{Int64, Nothing}}(nothing)
+global const _max_length = Ref{Union{Int, Nothing}}(nothing)
 # truncation direction, post or pre
 global const _truncation = Ref{String}("post")
 # special tokens
@@ -29,7 +29,7 @@ global const _SEP = "[SEP]"
 global const _SPECIAL_TOKENS = Vector{String}([_PAD, _UNK, _MASK, _CLS, _SEP])
 
 
-function init(vocab_path::String; cache_path::Union{String, Nothing} = nothing, do_lowercase::Bool = false, max_word_length::Union{Int64, Nothing} = nothing)
+function init(vocab_path::String; cache_path::Union{String, Nothing} = nothing, do_lowercase::Bool = false, max_word_length::Union{Int, Nothing} = nothing)
     #= Initialize tokenizer
     Args:
       vocab_path: String, local path or http url to vocabulary
@@ -37,7 +37,7 @@ function init(vocab_path::String; cache_path::Union{String, Nothing} = nothing, 
       do_lowercase: do lowercase
     =#
     global _token2id[] = load_vocab(vocab_path, cache_path=cache_path)
-    global _id2token[] = Dict{Int64, String}((v, k) for (k, v) in _token2id[])
+    global _id2token[] = Dict{Int, String}((v, k) for (k, v) in _token2id[])
     global _do_lowercase[] = do_lowercase
     if max_word_length != nothing
         global _max_word_length[] = max_word_length
@@ -45,10 +45,10 @@ function init(vocab_path::String; cache_path::Union{String, Nothing} = nothing, 
 end
 
 
-function enable_truncation(max_length::Int64; truncation::String = "post")
+function enable_truncation(max_length::Int; truncation::String = "post")
     #= Enable truncation
     Args:
-      max_length: Int64, specify max token length
+      max_length: Int, specify max token length
       truncation: String, specify truncation from ["post", "pre"]
     =#
     @assert truncation in ["pre", "post"] "please specify truncation from [`pre`, `post`]"
@@ -57,10 +57,10 @@ function enable_truncation(max_length::Int64; truncation::String = "post")
 end
 
 
-function decode(token_ids::Vector{Int64})::String
+function decode(token_ids::Vector{Int})::String
     #= Recover text from token indices
     Args:
-      token_ids: Vector{Int64}
+      token_ids: Vector{Int}
     =#
     tokens = [id_to_token(id) for id in token_ids]
     tokens = [token for token in tokens if token ∉ _SPECIAL_TOKENS]
@@ -83,7 +83,7 @@ function decode(token_ids::Vector{Int64})::String
 end
 
 
-function encode(first_text::String; second_text::Union{String, Nothing} = nothing)::Tuple{Vector{Int64}, Vector{Int64}}
+function encode(first_text::String; second_text::Union{String, Nothing} = nothing)::Tuple{Vector{Int}, Vector{Int}}
     #= Encode text to token indices and segment indices
     Args:
       first_text: String, first text
@@ -156,7 +156,7 @@ function _tokenize(text::String)::Vector{String}
             tmp *= " " * ch * " "
         elseif isspace(ch)
             tmp *= " "
-        elseif Int64(ch) == 0 || Int64(ch) == 65533 || iscntrl(ch)
+        elseif Int(ch) == 0 || Int(ch) == 65533 || iscntrl(ch)
             continue
         else
             tmp *= ch
@@ -213,7 +213,7 @@ end
 
 
 
-function token_to_id(token::String)::Int64
+function token_to_id(token::String)::Int
     #= Convert token to the corresponding index
     Args:
       token: String
@@ -225,10 +225,10 @@ function token_to_id(token::String)::Int64
 end
 
 
-function id_to_token(id::Int64)::String
+function id_to_token(id::Int)::String
     #= Convert index to the corresponding token
     Args:
-      id: Int64
+      id: Int
     =#
     if haskey(_id2token[], id)
         return _id2token[][id]
@@ -237,13 +237,13 @@ function id_to_token(id::Int64)::String
 end
 
 
-function load_vocab(vocab_path::String; cache_path::Union{String, Nothing} = nothing)::Dict{String, Int64}
+function load_vocab(vocab_path::String; cache_path::Union{String, Nothing} = nothing)::Dict{String, Int}
     #= Load vocabulary from local file or remote http url
     Args:
       vocab_path: String, path to vocabulary
       cache_path: Union{String, nothing} = nothing, specify the path to cache remote file in local
     =#
-    vocab = Dict{String, Int64}()
+    vocab = Dict{String, Int}()
 
     if IsURL.isurl(vocab_path)
         println("downloading vocabulary from $vocab_path")
