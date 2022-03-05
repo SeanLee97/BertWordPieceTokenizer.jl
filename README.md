@@ -7,7 +7,7 @@ Load BERT WordPiece Tokenizer
 
 
 ```julia
-julia> using Pkg; Pkg.add("(https://github.com/SeanLee97/BertWordPieceTokenizer.jl.git")
+julia> using Pkg; Pkg.add("https://github.com/SeanLee97/BertWordPieceTokenizer.jl.git")
 ```
 
 
