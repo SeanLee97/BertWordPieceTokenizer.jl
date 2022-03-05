@@ -9,3 +9,5 @@ IsURL = "ceb4388c-583f-448d-bb30-00b11e8c5682"
 
 [compat]
 julia = "1.4"
+HTTP = "0.9"
+IsURL = "0.2"
